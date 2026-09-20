@@ -20,6 +20,9 @@
         <activity
             android:name=".SecondActivity"
             android:exported="false" />
+        <activity
+            android:name=".PuzzleActivity"
+            android:exported="false" />
     </application>
     
 </manifest>
