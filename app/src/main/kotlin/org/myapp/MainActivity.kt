@@ -3,11 +3,13 @@ package org.myapp
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnGreet: Button
     private lateinit var btnToast: Button
     private lateinit var btnReset: Button
+    private lateinit var btnPuzzle: Button
 
     override fun attachBaseContext(newBase: Context) {
         val prefs = newBase.getSharedPreferences("MyPrefs", MODE_PRIVATE)
@@ -112,6 +115,21 @@ class MainActivity : AppCompatActivity() {
         btnGreet = findViewById(R.id.btnGreet)
         btnToast = findViewById(R.id.btnToast)
         btnReset = findViewById(R.id.btnReset)
+
+        // Puzzle button, added in code so activity_main.xml stays untouched.
+        // It is inserted right after btnReset, inside the same parent layout.
+        btnPuzzle = Button(this).apply {
+            text = "Jigsaw puzzle"
+            layoutParams = ViewGroup.LayoutParams(
+                btnReset.layoutParams.width,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+        val resetParent = btnReset.parent as ViewGroup
+        resetParent.addView(btnPuzzle, resetParent.indexOfChild(btnReset) + 1)
+        btnPuzzle.setOnClickListener {
+            startActivity(Intent(this, PuzzleActivity::class.java))
+        }
 
         val versionName = packageManager.getPackageInfo(packageName, 0).versionName
         textAboutVersion.text = getString(R.string.about_version, versionName)
@@ -207,6 +225,7 @@ class MainActivity : AppCompatActivity() {
         btnGreet.setTextColor(textColor)
         btnToast.setTextColor(textColor)
         btnReset.setTextColor(textColor)
+        btnPuzzle.setTextColor(textColor)
 
         bottomNav.itemTextColor = ColorStateList.valueOf(textColor)
         bottomNav.itemIconTintList = ColorStateList.valueOf(textColor)
@@ -248,6 +267,7 @@ class MainActivity : AppCompatActivity() {
             btnGreet.setTextColor(color)
             btnToast.setTextColor(color)
             btnReset.setTextColor(color)
+            btnPuzzle.setTextColor(color)
             bottomNav.itemTextColor = ColorStateList.valueOf(color)
             bottomNav.itemIconTintList = ColorStateList.valueOf(color)
         }
